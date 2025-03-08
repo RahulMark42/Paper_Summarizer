@@ -1,0 +1,123 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Recent AI & CS Papers</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .paper { border-bottom: 1px solid #ccc; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Recent AI & Computer Science Papers</h1>
+    {% for paper in papers %}
+        <div class="paper">
+            <h2><a href="{{ paper.link }}" target="_blank">{{ paper.title }}</a></h2>
+            <p>{{ paper.summary }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html>
+    <head>
+        <title>Recent AI & CS Papers</title>
+        <script>
+            window.MathJax = {
+                tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                svg: { scale: 0.9 }
+            };
+        </script>
+        <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 40px; }
+            .paper { border-bottom: 1px solid #ccc; padding: 10px; }
+        </style>
+    </head>
+    <body>
+        <h1>Recent AI & Computer Science Papers</h1>
+    
+        <form method="POST">
+            <label><input type="checkbox" name="topics" value="AI" {% if 'AI' in selected_topics %}checked{% endif %}> AI</label>
+            <label><input type="checkbox" name="topics" value="ML" {% if 'ML' in selected_topics %}checked{% endif %}> ML</label>
+            <label><input type="checkbox" name="topics" value="CV" {% if 'CV' in selected_topics %}checked{% endif %}> Computer Vision</label>
+            <label><input type="checkbox" name="topics" value="NN" {% if 'NN' in selected_topics %}checked{% endif %}> Neural Networks</label>
+            <label><input type="checkbox" name="topics" value="StatsML" {% if 'StatsML' in selected_topics %}checked{% endif %}> Statistics for ML</label>
+            <label><input type="checkbox" name="topics" value="JMLR" {% if 'JMLR' in selected_topics %}checked{% endif %}> JMLR</label>
+            <button type="submit">Fetch Papers</button>
+        </form>
+    
+        {% for paper in papers %}
+            <div class="paper">
+                <h2><a href="{{ paper.link }}" target="_blank">{{ paper.title }}</a></h2>
+                <p class="math-content">{{ paper.summary|safe }}</p>
+            </div>
+        {% endfor %}
+    
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                MathJax.typeset();
+            });
+        </script>
+    </body>
+    
+</html>
+
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recent AI & CS Papers</title>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            svg: { scale: 0.9 }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .paper { border-bottom: 1px solid #ccc; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Recent AI & Computer Science Papers</h1>
+
+    <form method="POST">
+        <label><input type="checkbox" name="topics" value="Arxiv AI" {% if 'Arxiv AI' in selected_topics %}checked{% endif %}> Arxiv AI</label>
+        <label><input type="checkbox" name="topics" value="Arxiv ML" {% if 'Arxiv ML' in selected_topics %}checked{% endif %}> Arxiv ML</label>
+        <label><input type="checkbox" name="topics" value="Arxiv CV" {% if 'Arxiv CV' in selected_topics %}checked{% endif %}> Arxiv Computer Vision</label>
+        <label><input type="checkbox" name="topics" value="Arxiv NN" {% if 'Arxiv NN' in selected_topics %}checked{% endif %}> Arxiv Neural Networks</label>
+        <label><input type="checkbox" name="topics" value="Arxiv StatsML" {% if 'Arxiv StatsML' in selected_topics %}checked{% endif %}> Arxiv Statistics for ML</label>
+        <label><input type="checkbox" name="topics" value="JMLR" {% if 'JMLR' in selected_topics %}checked{% endif %}> JMLR</label>
+        <button type="submit">Fetch Papers</button>
+    </form>
+
+    {% if arxiv_papers %}
+        <h2>Recent Papers from Arxiv</h2>
+        {% for paper in arxiv_papers %}
+            <div class="paper">
+                <h2><a href="{{ paper.link }}" target="_blank">{{ paper.title }}</a></h2>
+                <p class="math-content">{{ paper.summary | safe }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if jmlr_papers %}
+        <h2>Recent Papers from JMLR</h2>
+        {% for paper in jmlr_papers %}
+            <div class="paper">
+                <h2><a href="{{ paper.link }}" target="_blank">{{ paper.title }}</a></h2>
+                <p class="math-content">{{ paper.summary | safe }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            MathJax.typeset();
+        });
+    </script>
+</body>
+</html>
