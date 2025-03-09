@@ -7,6 +7,7 @@ import markdown
 import json
 import os
 import feedparser
+import time
 
 # Configure Gemini API
 genai.configure(api_key="AIzaSyAy9BuATxWMgEjgedB13u1LvyNN5INWYRQ")
@@ -53,30 +54,70 @@ def fetch_arxiv_papers(selected_topics):
     
     return papers
 
+# def summarize_with_gemini(text):
+#     """Summarizes text using Gemini AI API with caching."""
+#     cache_file = "summaries_cache.json"
+    
+#     if os.path.exists(cache_file):
+#         with open(cache_file, "r") as f:
+#             cache = json.load(f)
+#     else:
+#         cache = {}
+
+#     if text in cache:
+#         return cache[text]
+    
+#     # Generate summary using Gemini
+#     prompt = f"Summarize this research paper and provide key ideas and main points. Include key mathematical ideas or results as well:\n{text}\n\n."
+#     response = genai.GenerativeModel("gemini-1.5-flash").generate_content(prompt)
+
+#     summary = response.text if response else "Summary not available."
+    
+#     cache[text] = summary
+#     with open(cache_file, "w") as f:
+#         json.dump(cache, f)
+    
+#     return summary
+
 def summarize_with_gemini(text):
-    """Summarizes text using Gemini AI API with caching."""
+    """Summarizes text using Gemini AI API with caching and error handling."""
     cache_file = "summaries_cache.json"
     
+    # Load existing cache
     if os.path.exists(cache_file):
         with open(cache_file, "r") as f:
             cache = json.load(f)
     else:
         cache = {}
 
+    # Return cached summary if available
     if text in cache:
         return cache[text]
-    
-    # Generate summary using Gemini
-    prompt = f"Summarize this research paper and provide key ideas and main points. Include key mathematical ideas or results as well:\n{text}\n\n."
-    response = genai.GenerativeModel("gemini-1.5-flash").generate_content(prompt)
 
-    summary = response.text if response else "Summary not available."
-    
-    cache[text] = summary
-    with open(cache_file, "w") as f:
-        json.dump(cache, f)
-    
-    return summary
+    prompt = f"Summarize this research paper and provide key ideas:\n{text}\n\n."
+
+    retries = 3  # Retry up to 3 times
+    for attempt in range(retries):
+        try:
+            response = genai.GenerativeModel("gemini-1.5-flash").generate_content(prompt)
+            summary = response.text if response else "Summary not available."
+            
+            # Save in cache
+            cache[text] = summary
+            with open(cache_file, "w") as f:
+                json.dump(cache, f)
+            
+            return summary
+
+        except google.api_core.exceptions.ResourceExhausted:
+            print(f"Quota exceeded. Retrying in {2 ** attempt} seconds...")
+            time.sleep(2 ** attempt)  # Exponential backoff (2s, 4s, 8s)
+        except Exception as e:
+            print(f"Unexpected error: {e}")
+            break
+
+    return "Daily API quota exceeded. Try again later!"
+
 
 app = Flask(__name__)
 
