@@ -1,0 +1,29 @@
+{
+  "family": "paper-summarizer-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::905418447303:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "paper-summarizer-container",
+      "image": "905418447303.dkr.ecr.us-east-1.amazonaws.com/paper-summarizer:latest",
+      "portMappings": [
+        {
+          "containerPort": 5000,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/aws/ecs/paper-summarizer-cluster",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
