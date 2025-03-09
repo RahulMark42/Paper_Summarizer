@@ -83,17 +83,33 @@
 </head>
 <body>
     <h1>Recent AI & Computer Science Papers</h1>
-
     <form method="POST">
-        <label><input type="checkbox" name="topics" value="Arxiv AI" {% if 'Arxiv AI' in selected_topics %}checked{% endif %}> Arxiv AI</label>
-        <label><input type="checkbox" name="topics" value="Arxiv ML" {% if 'Arxiv ML' in selected_topics %}checked{% endif %}> Arxiv ML</label>
-        <label><input type="checkbox" name="topics" value="Arxiv CV" {% if 'Arxiv CV' in selected_topics %}checked{% endif %}> Arxiv Computer Vision</label>
-        <label><input type="checkbox" name="topics" value="Arxiv NN" {% if 'Arxiv NN' in selected_topics %}checked{% endif %}> Arxiv Neural Networks</label>
-        <label><input type="checkbox" name="topics" value="Arxiv StatsML" {% if 'Arxiv StatsML' in selected_topics %}checked{% endif %}> Arxiv Statistics for ML</label>
-        <label><input type="checkbox" name="topics" value="JMLR" {% if 'JMLR' in selected_topics %}checked{% endif %}> JMLR</label>
+        <label>
+            <input type="checkbox" name="topics" value="Arxiv AI" 
+            {% if not selected_topics or selected_topics == ['Arxiv AI'] %}checked{% endif %}> Arxiv AI
+        </label>
+        <label>
+            <input type="checkbox" name="topics" value="Arxiv ML" 
+            {% if selected_topics and 'Arxiv ML' in selected_topics %}checked{% endif %}> Arxiv ML
+        </label>
+        <label>
+            <input type="checkbox" name="topics" value="Arxiv CV" 
+            {% if selected_topics and 'Arxiv CV' in selected_topics %}checked{% endif %}> Arxiv Computer Vision
+        </label>
+        <label>
+            <input type="checkbox" name="topics" value="Arxiv NN" 
+            {% if selected_topics and 'Arxiv NN' in selected_topics %}checked{% endif %}> Arxiv Neural Networks
+        </label>
+        <label>
+            <input type="checkbox" name="topics" value="Arxiv StatsML" 
+            {% if selected_topics and 'Arxiv StatsML' in selected_topics %}checked{% endif %}> Arxiv Statistics for ML
+        </label>
+        <label>
+            <input type="checkbox" name="topics" value="JMLR" 
+            {% if selected_topics and 'JMLR' in selected_topics %}checked{% endif %}> JMLR
+        </label>
         <button type="submit">Fetch Papers</button>
     </form>
-
     {% if arxiv_papers %}
         <h2>Recent Papers from Arxiv</h2>
         {% for paper in arxiv_papers %}

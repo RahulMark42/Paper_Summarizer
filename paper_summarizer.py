@@ -129,7 +129,7 @@ def home():
 
     selected_topics = request.form.getlist('topics')  
     if not selected_topics:
-        selected_topics = ["Arxiv AI", "Arxiv ML", "Arxiv CV", "Arxiv NN", "Arxiv StatsML", "JMLR"]
+        selected_topics = ["Arxiv AI"]  # Ensure only "Arxiv AI" is selected by default
 
     arxiv_papers = fetch_arxiv_papers(selected_topics) if any(t.startswith("Arxiv") for t in selected_topics) else []
     jmlr_papers = fetch_jmlr_articles() if "JMLR" in selected_topics else []
@@ -148,7 +148,6 @@ def home():
         summarized_jmlr.append({"title": article['title'], "summary": summary_html, "link": article['link']})
     
     return render_template('index.html', arxiv_papers=summarized_arxiv, jmlr_papers=summarized_jmlr, selected_topics=selected_topics)
-
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5001))
     app.run(host='0.0.0.0', port=port, threaded = True)
