@@ -8,6 +8,7 @@ import json
 import os
 import feedparser
 import time
+import google.api_core.exceptions
 
 # Configure Gemini API
 genai.configure(api_key="AIzaSyAy9BuATxWMgEjgedB13u1LvyNN5INWYRQ")
